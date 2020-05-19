@@ -5,7 +5,7 @@ function! s:run() abort
     let l:iLast = line('$')
     for l:iLine in range(1, l:iLast)
         let l:sLine = getline(l:iLine)
-        if l:sLine =~# '^\s*##'
+        if l:sLine =~# '^\s*##\s*\d\+'
             let l:iSection += 1
             let l:sLine = substitute(l:sLine, '\d\+', l:iSection, '')
             call setline(l:iLine, l:sLine)
