@@ -123,7 +123,7 @@ function! s:class.output() dict abort
         call add(l:lsRole, l:say)
     endfor
 
-    let l:table = ['|--|--|--|', '| 人物 | 句数 | 字数 |']
+    let l:table = ['| 人物 | 句数 | 字数 |', '|--|--|--|']
     call append(line('$'), l:table)
     call sort(lsRole, {a, b -> b.char - a.char})
     for l:say in l:lsRole
