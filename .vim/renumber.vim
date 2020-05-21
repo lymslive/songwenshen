@@ -1,4 +1,7 @@
 " 重新编号，修改当前 buffer ## 节号
+" 在编辑 main.md 时运行如下命令：
+" :source .vim/renumber.vim
+
 " 返回最后一个节号
 function! s:run() abort
     let l:iSection = -1
@@ -15,3 +18,6 @@ function! s:run() abort
 endfunction
 
 call s:run()
+
+" 首次加载后可直接执行命令
+command! JubenRenumber call s:run()

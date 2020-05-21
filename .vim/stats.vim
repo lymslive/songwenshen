@@ -1,10 +1,13 @@
+" 生成台词统计等信息
+" 在编辑 main.md 时运行如下命令：
+" :source .vim/stats.vim
 
 let s:class = {}
 
 " Func: s:new 
 function! s:new() abort
     let l:obj = copy(s:class)
-    let l:obj.curline = 0
+    let l:obj.curline = 1
     let l:obj.maxline = line('$')
     let l:obj.desc_online = 0
     let l:obj.desc_inline = 0
@@ -17,9 +20,9 @@ endfunction
 function! s:class.run() dict abort
     let l:joinLine = ''
 
-    while self.curline < self.maxline
-        let self.curline += 1
+    while self.curline <= self.maxline
         let l:sLine = getline(self.curline)
+        let self.curline += 1
         if l:sLine =~# '^\s*$'
             if !empty(l:joinLine)
                 let l:ok = self.deal_desc(l:joinLine) || self.deal_line(l:joinLine)
@@ -42,9 +45,40 @@ endfunction
 " Method: deal_title 
 function! s:class.deal_title(text) dict abort
     let l:sLine = a:text
+    " ## 1 【苏城风情】
     if l:sLine =~# '^\s*##\s*\d\+'
-        let l:sTitle = substitute(l:sLine, '^\s*##\s*', '', '')
-        call add(self.section, l:sTitle)
+        let l:lsMatch = matchlist(l:sLine, '^\s*##\s*\(\d\+\)\s*【\(.\+\)】')
+        if len(l:lsMatch) <= 2
+            return v:false
+        endif
+        let l:number = l:lsMatch[1]
+        let l:title = l:lsMatch[2]
+        let l:section = {'number': l:number, 'title': l:title}
+        " 再向下查找时间地点人物
+        let l:place = ''
+        let l:time = ''
+        let l:roles = ''
+        let l:next = 0
+        for l:below in range(1, 3)
+            let l:sLine = getline(self.curline + l:below)
+            if l:sLine !~# '^\s*\*\s*'
+                break
+            endif
+            let l:next = l:below
+            let l:sLine = substitute(l:sLine, '^\s*\*\s*', '', '')
+            if l:below == 1
+                let l:place = l:sLine
+            elseif l:below == 2
+                let l:time = l:sLine
+            elseif l:below == 3
+                let l:roles = substitute(l:sLine, '^.*：', '', '')
+            endif
+        endfor
+        let l:section.place = l:place
+        let l:section.time = l:time
+        let l:section.roles = l:roles
+        call add(self.section, l:section)
+        let self.curline += l:next
         return v:true
     endif
     return v:false
@@ -98,18 +132,25 @@ function! s:class.deal_line(text) dict abort
     return v:true
 endfunction
 
-" Method: output 
-function! s:class.output() dict abort
+" Method: output_title 
+function! s:class.output_title() dict abort
     edit title.md
     1,$ delete
 
     call append(0, '# 分段标题')
-    for l:title in self.section
-        call append(line('$'), '* ' . l:title)
+    let l:table = ['| 序号 | 标题 | 时间 | 地点 |', '|--|--|--|--|']
+    call append(line('$'), l:table)
+
+    for l:section in self.section
+        let l:text = printf('| %d | %s | %s | %s |', l:section.number, l:section.title, l:section.time, l:section.place)
+        call append(line('$'), l:text)
     endfor
     call append(line('$'), '')
+endfunction
 
-    edit stats.md
+" Method: output_roles 
+function! s:class.output_roles() dict abort
+    vsplit stats.md
     1,$ delete
     call append(0, '# 台词统计')
 
@@ -123,7 +164,7 @@ function! s:class.output() dict abort
         call add(l:lsRole, l:say)
     endfor
 
-    let l:table = ['| 人物 | 句数 | 字数 |', '|--|--|--|']
+    let l:table = ['| 人物 | 段数 | 字数 |', '|--|--|--|']
     call append(line('$'), l:table)
     call sort(lsRole, {a, b -> b.char - a.char})
     for l:say in l:lsRole
@@ -134,8 +175,14 @@ function! s:class.output() dict abort
     call append(line('$'), '')
     call append(line('$'), '* 台词总段数：' . l:total_line)
     call append(line('$'), '* 台词总字数：' . l:total_char)
-    call append(line('$'), '* 行外描述字数：' . self.desc_online)
-    call append(line('$'), '* 行内描述字数：' . self.desc_inline)
+    call append(line('$'), '* （行外描述字数：' . self.desc_online)
+    call append(line('$'), '* （行内描述）字数：' . self.desc_inline)
+endfunction
+
+" Method: output 
+function! s:class.output() dict abort
+    call self.output_title()
+    call self.output_roles()
 endfunction
 
 " Func: s:count_char 
@@ -145,10 +192,20 @@ function! s:count_char(text) abort
 endfunction
 
 " Func: s:run 
-function! s:run() abort
+function! s:run(...) abort
     let l:scaner = s:new()
+    if a:0 >= 1
+        let l:scaner.curline = a:1
+    endif
+    if a:0 >= 2
+        let l:scaner.maxline = a:2
+    endif
     call l:scaner.run()
     call l:scaner.output()
 endfunction
 
 call s:run()
+
+" 首次加载后可直接执行命令
+" 可选定部分行统计
+command! -nargs=* -range=% JubenStats call s:run(<line1>, <line2>)
