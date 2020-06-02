@@ -26,8 +26,8 @@
 采用 markdown 文档格式，可用记事本或任意文本编辑器打开，也有专门的 markdown
 编辑器。笔者使用 vim 编辑，顺便针对剧本格式定制高亮着色。
 
-![vim截图1](material/screenshot1.md)
-![vim截图2](material/screenshot2.md)
+![vim截图1](material/screenshot1.PNG)
+![vim截图2](material/screenshot2.PNG)
 
 ## 版权声明
 
