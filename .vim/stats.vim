@@ -59,7 +59,7 @@ function! s:class.deal_title(text) dict abort
         let l:time = ''
         let l:roles = ''
         let l:next = 0
-        for l:below in range(1, 3)
+        for l:below in range(1, 2)
             let l:sLine = getline(self.curline + l:below)
             if l:sLine !~# '^\s*\*\s*'
                 break
@@ -67,9 +67,9 @@ function! s:class.deal_title(text) dict abort
             let l:next = l:below
             let l:sLine = substitute(l:sLine, '^\s*\*\s*', '', '')
             if l:below == 1
-                let l:place = l:sLine
-            elseif l:below == 2
                 let l:time = l:sLine
+            elseif l:below == 2
+                let l:place = l:sLine
             elseif l:below == 3
                 let l:roles = substitute(l:sLine, '^.*：', '', '')
             endif
@@ -177,6 +177,8 @@ function! s:class.output_roles() dict abort
     call append(line('$'), '* 台词总字数：' . l:total_char)
     call append(line('$'), '* （行外描述字数：' . self.desc_online)
     call append(line('$'), '* （行内描述）字数：' . self.desc_inline)
+    let l:sumAll = l:total_char + self.desc_online + self.desc_inline
+    call append(line('$'), '* 正文总字数：' . l:sumAll)
 endfunction
 
 " Method: output 
