@@ -6,19 +6,30 @@
 
 [点此阅读正文](main.md)
 
-（内有短序，只是作者之言，游离正文之外，读者一般可忽略）
+历史版本：
+
+* v1.1：当前版本。精简前半段，稍充实后半段主题。
+* [v1.0](https://github.com/lymslive/songwenshen/tree/v1.0)：初版完稿。
 
 ## 其他文档
 
-* [作者简介](author.md)
-* [内容简介](intro.md)
-* [人物介绍](roles.md)
-* [分段标题](title.md)
-* [台词统计](stats.md)
-* [改编新白的异同](diff-xinbai.md)
-* [参考知识](refers.md)
+* [作者简介](material/author.md)
+* [内容简介](material/intro.md)
+* [人物介绍](material/roles.md)
+* [分段标题](material/title.md)
+* [台词统计](material/stats.md)
+* [改编新白的异同](material/diff-xinbai.md)
+* [参考知识](material/refers.md)
 
-## 版本声明
+## 文档编辑
+
+采用 markdown 文档格式，可用记事本或任意文本编辑器打开，也有专门的 markdown
+编辑器。笔者使用 vim 编辑，顺便针对剧本格式定制高亮着色。
+
+![vim截图1](material/screenshot1.md)
+![vim截图2](material/screenshot2.md)
+
+## 版权声明
 
 主要参考开源软件界的 GPL 协议。
 
