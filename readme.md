@@ -4,9 +4,9 @@
 
 ## 阅读正文 main.md
 
-[点此阅读正文](main.md)
+[点此阅读正文](main.md)：约 6.5 万字。
 
-[历史版本](material/history.md)：
+[修订历史](material/history.md)：
 
 * v1.1：当前版本。精简前半段，稍充实后半段主题。
 * [v1.0](https://github.com/lymslive/songwenshen/tree/v1.0)：初版完稿。
