@@ -29,9 +29,11 @@
 ![vim截图1](material/screenshot1.PNG)
 ![vim截图2](material/screenshot2.PNG)
 
-## 版权声明
+## 版权声明：CC BY-NC-ND 4.0
 
-主要参考开源软件界的 GPL 协议。
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>
+
+主要参考共享知识协议。署名-非商业性使用-禁止演绎 4.0 国际版 (CC BY-NC-ND 4.0)
 
 文学剧本的所有文字开源，任何人可以自由阅读、下载、批评，但不允许在未经授权的情
 况下进行商业改编、传播等。
